@@ -23,6 +23,16 @@ public class StudentDatabase {
         }
     }
 
+    @Override
+    public String toString() {
+        String string="";
+
+        for (Map.Entry<String, StudentRecord> recordEntry: studentRecordMap.entrySet()){
+            string = string+recordEntry.getValue().toString()+"\n";
+        }
+        return string;
+    }
+
     public StudentRecord forJMBAG(String jmbag){
         return studentRecordMap.get(jmbag);
     }
@@ -30,7 +40,7 @@ public class StudentDatabase {
     public List<StudentRecord> filter(IFilter filter){
         List<StudentRecord> filteredList = new ArrayList<StudentRecord>();
 
-        for (Map.Entry key : studentRecordMap.entrySet()) {
+        for (String key : studentRecordMap.keySet()) {
             if (filter.accepts(studentRecordMap.get(key))) {
                 filteredList.add(studentRecordMap.get(key));
             }

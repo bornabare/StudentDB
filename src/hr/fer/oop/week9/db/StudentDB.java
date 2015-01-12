@@ -17,7 +17,7 @@ public class StudentDB {
 
         System.out.println("Procesing database . . . ");
         StudentDatabase database = processDatabase();
-        System.out.println(database.forJMBAG("0000000014").toString());
+        System.out.println("Process completed !");
 
         BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
 
@@ -27,38 +27,58 @@ public class StudentDB {
                 String line = bf.readLine();
                 String[] splitLine = line.split(" ");
 
-                for (String s : splitLine){
-                    System.out.println(s);
-                }
-
-                if (splitLine[0] == "query") {
-                    System.out.println("Wrong argument !");
+                if (!splitLine[0].equals("query")) {
+                    System.out.println("Undefined command !");
                     System.exit(1);
                 }
 
                 splitLine[0] = null;
-                String line2 = null;
+                String line2 = "";
 
-                for (String string : splitLine){
-                    line2 = line2+string;
+                for (int i = 0; i < splitLine.length-1; i++) {
+                    line2 = line2+splitLine[i+1];
                 }
+
                 splitLine = line2.split("=");
 
-                if(splitLine[0].equals("query")){
-                   database.filter(new LastNameFilter(splitLine[1]));
+                if(splitLine[0].equals("lastName")){
+                    String s = splitLine[1].substring(splitLine[1].indexOf("\"") + 1);
+                    s = s.substring(0, s.indexOf("\""));
+
+                    System.out.println("+============+===========+===========+===+");
+
+                    IFilter filter = new LastNameFilter(s);
+                    List<StudentRecord> queryDatabase = database.filter(filter);
+
+                    for (StudentRecord record : queryDatabase){
+                        System.out.println(record.toString());
+                    }
+                    System.out.println("+============+===========+===========+===+");
+                    System.out.println("Records selected: " + queryDatabase.size());
                 }
 
                 else if (splitLine[0].equals("jmbag")){
                     String s = splitLine[1].substring(splitLine[1].indexOf("\"") + 1);
                     s = s.substring(0, s.indexOf("\""));
-                    database.forJMBAG(s);
+                    System.out.println("+============+===========+===========+===+");
+                    StudentRecord queryDatebase = database.forJMBAG(s);
+                    System.out.println(queryDatebase.toString());
+                    System.out.println("+============+===========+===========+===+");
+                    int length = 1;
+                    if (queryDatebase == null){
+                        length = 0;
+                    }
+                    System.out.println("Records selected: "+ length);
+                }
+                else {
+                    System.out.println("Wrong argument line !");
+                    System.exit(1);
                 }
 
             } catch (IOException e){
                 e.printStackTrace();
             }
 
-            break;
         }
 
     }

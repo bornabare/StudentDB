@@ -21,12 +21,14 @@ public class StudentRecord {
 
     @Override
     public String toString() {
-        return "StudentRecord{" +
-                "jmbag='" + jmbag + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", finalGrade='" + finalGrade + '\'' +
-                '}';
+        return "| " + jmbag + " | "
+                + lastName + " |"
+                + firstName + "| "
+                + finalGrade +  "| ";
+    }
+
+    public String getLastName() {
+        return lastName;
     }
 
     @Override
@@ -36,8 +38,8 @@ public class StudentRecord {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof String) {
-            return jmbag.equals(obj);
+        if (obj instanceof StudentRecord) {
+            return ((StudentRecord) obj).jmbag.equals(jmbag);
         }
         throw new IllegalArgumentException();
     }
