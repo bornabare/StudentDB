@@ -3,6 +3,7 @@ package hr.fer.oop.topic10.db;
 import hr.fer.oop.week9.db.StudentRecord;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -32,6 +33,18 @@ public class CourseDatabase {
         return "CourseDatabase { \n" +
                 "\tcourseRecordMap= " + courseRecordMap +
                 " }";
+    }
+
+    public List<CourseRecord> getCourses() {
+        List<CourseRecord> records = new LinkedList<>();
+        for (Map.Entry<String, CourseRecord> course : courseRecordMap.entrySet()) {
+            records.add(course.getValue());
+        }
+        return records;
+    }
+
+    public List<String> getStringList() {
+        return stringList;
     }
 
     public CourseRecord findById(String courseID) {

@@ -1,9 +1,6 @@
 package hr.fer.oop.week9.db;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by borna on 1/9/15.
@@ -31,6 +28,20 @@ public class StudentDatabase {
             string = string+recordEntry.getValue().toString()+"\n";
         }
         return string;
+    }
+    public List<StudentRecord> getStudents(){
+        List<StudentRecord> records = new LinkedList<>();
+        for (Map.Entry<String, StudentRecord> entry: studentRecordMap.entrySet()) {
+            records.add(entry.getValue());
+        }
+        return records;
+    }
+    public Map<String, StudentRecord> getJmbagMap(){
+        return null;
+    }
+
+    public Map<String, StudentRecord> getStudentRecordMap() {
+        return studentRecordMap;
     }
 
     public StudentRecord forJMBAG(String jmbag){

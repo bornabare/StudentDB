@@ -97,6 +97,7 @@ public class EnrolmentDatabase {
         for (EnrolmentRecord record : enrolmentRecordsSet) {
             if (record.getCourseID().equals(courseID) && record.getJmbag().equals(studentJMBAG)){
                 enrolmentRecordsSet.remove(record);
+                return;
             }
         }
     }

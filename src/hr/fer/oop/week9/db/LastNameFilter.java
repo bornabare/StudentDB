@@ -46,6 +46,12 @@ public class LastNameFilter implements IFilter {
                 }
             }
         }
+        /*
+        all database
+         */
+        else if (string.length == 0) {
+            return true;
+        }
 
         else {
             System.out.println("Wrong asterisk consumation !");

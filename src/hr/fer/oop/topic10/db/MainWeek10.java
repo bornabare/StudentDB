@@ -12,68 +12,41 @@ import java.util.*;
 public class MainWeek10 {
 
     public static void main(String[] args) {
-        BufferedReader predmetiReader;
-        BufferedReader studentiReader;
-        BufferedReader upisaniPredmetiReader;
 
-        try {
-            predmetiReader = new BufferedReader(new FileReader("//Users/borna/IdeaProjects/StudentDB/predmeti.txt"));
-            studentiReader = new BufferedReader(new FileReader("//Users/borna/IdeaProjects/StudentDB/studenti.txt"));
-            upisaniPredmetiReader = new BufferedReader(new FileReader("//Users/borna/IdeaProjects/StudentDB/upisaniPredmeti.txt"));
+        Database database = new Database ("//Users/borna/IdeaProjects/StudentDB/predmeti.txt",
+                                        "//Users/borna/IdeaProjects/StudentDB/studenti.txt",
+                                        "//Users/borna/IdeaProjects/StudentDB/upisaniPredmeti.txt");
 
-            String line;
+        // dohvacanje popisa studenata i ispis
+        StudentDatabase studData = database.getStudentTable();
+        System.out.printf("Get student table: \n"+studData.toString());
 
-            List<String> predmeti = new LinkedList<String>();
-            List<String> studenti = new LinkedList<String>();
-            List<String> upisaniPredmeti = new LinkedList<String>();
+        // dohvaćanje popisa predmeta jednog studenta
+        System.out.println("\nPopis predmeta jednog studenta: ");
+        String jmbag = "0000000002";
+        Collection<EnrolmentRecord> predmetiStudenta = database.getEnrolmentTable().findByStudent(jmbag);
+        for(EnrolmentRecord record : predmetiStudenta){
+            System.out.println(record.toString());
+        }
 
-            while ((line = predmetiReader.readLine()) != null){
-                predmeti.add(line);
-            }
+        // stvaranje novog predmeta
+        System.out.println("Stvaranje novog predmeta:");
+        database.getCourseTable().getStringList().add("4\tMAT");
+        CourseDatabase courseDatabase = new CourseDatabase(database.getCourseTable().getStringList());
+        System.out.println(courseDatabase.toString());
 
-            while ((line = studentiReader.readLine()) != null){
-                studenti.add(line);
-            }
+        // upisivanje predmeta nekom studentu
+        database.getEnrolmentTable().newCourse("0000000001", "4");
 
-            while ((line = upisaniPredmetiReader.readLine()) != null){
-                upisaniPredmeti.add(line);
-            }
+        // postavljanje ocjene
+        System.out.println("\nPostavljanje ocjene: ");
+        database.getEnrolmentTable().updateEnrolment(new EnrolmentRecord("3", "0000000002", "3"));
+        System.out.println(database.getEnrolmentTable().toString());
 
-            CourseDatabase courseDatabase = new CourseDatabase(predmeti);
-            StudentDatabase studentDatabase = new StudentDatabase(studenti);
-            EnrolmentDatabase enrolmentDatabase = new EnrolmentDatabase(upisaniPredmeti);
+        // brisanje upisa predmeta.
+        System.out.println("\nBrisanje upisa predmeta:");
+        database.getEnrolmentTable().deleteRecord("0000000001", "3");
+        System.out.println(database.getEnrolmentTable().toString());
 
-
-
-            Database database = new Database(studentDatabase, courseDatabase, enrolmentDatabase);
-
-            // dohvacanje popisa studenata i ispis
-            StudentDatabase studData = database.getStudentTable();
-            System.out.printf(studData.toString());
-
-            // dohvaćanje popisa predmeta jednog studenta
-            String jmbag = "0000000001";
-            Collection<EnrolmentRecord> predmetiStudenta = database.getEnrolmentTable().findByStudent(jmbag);
-            for(EnrolmentRecord record : predmetiStudenta){
-                System.out.println(record.toString());
-            }
-
-            // stvaranje novog predmeta
-            predmeti.add("4\tMAT");
-            courseDatabase = new CourseDatabase(predmeti);
-            System.out.println(courseDatabase.toString());
-
-            // upisivanje predmeta nekom studentu
-            database.getEnrolmentTable().newCourse("0000000001", "4");
-
-            // postavljanje ocjene
-            database.getEnrolmentTable().updateEnrolment(new EnrolmentRecord("3", "0000000002", "3"));
-            System.out.println(database.getEnrolmentTable().toString());
-
-            // brisanje upisa predmeta.
-//            database.getEnrolmentTable().deleteRecord("0000000001", "3");
-//            System.out.println(database.getEnrolmentTable().toString());
-
-        } catch (IOException e){}
     }
 }

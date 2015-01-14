@@ -31,6 +31,16 @@ public class StudentRecord {
         return lastName;
     }
 
+    public String getJmbag() {
+        return jmbag;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getComboFirstAndLastname(){return firstName+" "+lastName;}
+
     @Override
     public int hashCode() {
         return jmbag.hashCode();
